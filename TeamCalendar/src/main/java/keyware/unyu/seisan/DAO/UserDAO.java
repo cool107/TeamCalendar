@@ -33,6 +33,23 @@ public class UserDAO {
 
 		return result;
 	}
+	
+//	public ScheduleUser loginUser(String email, String password) {
+//		
+//		ScheduleUser result = null;
+//
+//		UserMapper mapper = session.getMapper(UserMapper.class);
+//
+//		try {
+//			result = mapper.loginUser(email, password);
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//
+//		return result;
+//	}
 
 	public int insertUser(ScheduleUser user) {
 		int result = 0;

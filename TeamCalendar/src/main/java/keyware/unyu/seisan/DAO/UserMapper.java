@@ -17,6 +17,9 @@ public interface UserMapper {
 
 	//会員登録変更
 	public int updateUser(ScheduleUser user);
+
+//	//ログイン
+//	public ScheduleUser loginUser(String email, String password);
 	
 	//全会員情報を読み込む
 	public ArrayList<ScheduleUser> listUser(RowBounds rb, Map<String, String> map);

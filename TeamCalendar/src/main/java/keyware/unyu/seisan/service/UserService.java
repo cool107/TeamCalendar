@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import keyware.unyu.seisan.DAO.UserDAO;
+import keyware.unyu.seisan.DAO.UserMapper;
 import keyware.unyu.seisan.VO.ScheduleUser;
 import keyware.unyu.seisan.util.PageNavigator;
 
@@ -20,6 +21,10 @@ public class UserService {
 		return dao.selectUser(email);
 	}
 
+//	public ScheduleUser loginUser(String email, String password) {
+//		return dao.loginUser(email, password);
+//	}
+	
 	public int insertUser(ScheduleUser user) {
 		return dao.insertUser(user);
 	}

@@ -2,6 +2,7 @@ package keyware.unyu.seisan.controller;
 
 import java.util.ArrayList;
 
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "checkId", method = RequestMethod.GET)
 	public ScheduleUser checkId(String email) {
-
+		System.out.println(email);
 		ScheduleUser result = service.selectUser(email);
 		System.out.println(result);
 		if (result != null) {
@@ -55,29 +56,48 @@ public class UserController {
 
 		if (result != 1) {
 			System.out.println("failed");
-			return "redirect:/goJoin";
+			return "redirect:/";
 		}
 		System.out.println("success");
 		System.out.println(user);
 		return "redirect:/";
 	}
 
-	// ログインフォーム
-	@RequestMapping(value = "loginUser", method = RequestMethod.GET)
-	public String loginForm() {
-		return "/user/loginForm";
-	}
+//	// ログインフォーム
+//	@RequestMapping(value = "loginUser", method = RequestMethod.GET)
+//	public String loginForm() {
+//		return "/user/loginForm";
+//	}
 
 	// ログイン
 	@RequestMapping(value = "loginUser", method = RequestMethod.POST)
 	public String loginUser(String email, HttpSession session) {
-		ScheduleUser result = service.selectUser(email);
-		System.out.println("loginSuccess");
-		session.setAttribute("loginId", result.getEmail());
-		session.setAttribute("loginName", result.getName());
-		session.setAttribute("loginDivision", result.getDivision());
-		return "/user/mainPage";
+			System.out.println(email);
+			ScheduleUser result = service.selectUser(email);
+			if (result!=null) {
+				session.setAttribute("loginId", result.getEmail());
+				session.setAttribute("loginName", result.getName());
+				session.setAttribute("loginDivision", result.getDivision());
+				return "/user/mainPage";
+			}else {
+				return "redirect:/";
+			}
+			
 	}
+		
+//		if (email!=null&&password!=null) {
+////			ScheduleUser result = service.loginUser(email, password);
+//			if (result!=null) {
+//					System.out.println("loginSuccess");
+//					session.setAttribute("loginId", result.getEmail());
+//					session.setAttribute("loginName", result.getName());
+//					session.setAttribute("loginDivision", result.getDivision());
+//					return "/user/mainPage";
+//			}
+//		}
+//		String error = "IDまたはPASSWORDが違います。";
+//		session.setAttribute("error", error);
+//		return "redirect:/";
 
 	// ログアウト
 	@RequestMapping(value = "logoutUser", method = RequestMethod.GET)
