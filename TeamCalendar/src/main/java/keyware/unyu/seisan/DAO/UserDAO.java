@@ -34,23 +34,21 @@ public class UserDAO {
 		return result;
 	}
 	
-//	public ScheduleUser loginUser(String email, String password) {
-//		
-//		ScheduleUser result = null;
-//
-//		UserMapper mapper = session.getMapper(UserMapper.class);
-//
-//		try {
-//			result = mapper.loginUser(email, password);
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//
-//		return result;
-//	}
+	public int insertTeam(ScheduleUser user){
+		int result = 0;
 
+		UserMapper mapper = session.getMapper(UserMapper.class);
+
+		try {
+			result = mapper.insertTeam(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+
+		return result;
+	}
+		
 	public int insertUser(ScheduleUser user) {
 		int result = 0;
 
@@ -66,6 +64,33 @@ public class UserDAO {
 		return result;
 	}
 
+	public int teamSchedule() {
+		int result = 0;
+		UserMapper mapper = session.getMapper(UserMapper.class);
+		try {
+			result = mapper.teamSchedule();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	//TeamScheduleに登録した番号読み込む
+	public int getTeamSchedule() {
+		int result = 0;
+		UserMapper mapper = session.getMapper(UserMapper.class);
+		try {
+			result = mapper.getTeamSchedule();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	public int updateUser(ScheduleUser user) {
 
 		int result = 0;
@@ -84,13 +109,44 @@ public class UserDAO {
 
 		return result;
 	}
+	
+	public ArrayList<ScheduleUser> teamUser(PageNavigator navi, String keyField, String keyWord, String teamNumber) {
+		UserMapper mapper = session.getMapper(UserMapper.class);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("keyField", keyField);
+		map.put("keyWord", keyWord);
+		map.put("teamNumber", teamNumber);
+		RowBounds rb = new RowBounds(navi.getStartBoardPage(), navi.getBoardPerPage());
+		ArrayList<ScheduleUser> result = null;
+		try {
+			result = mapper.teamUser(rb, map);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public int getTeamUser(String keyField, String keyWord, String teamNumber) {
+		UserMapper mapper = session.getMapper(UserMapper.class);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("keyField", keyField);
+		map.put("keyWord", keyWord);
+		map.put("teamNumber", teamNumber);
+		int result = 0;
+		try {
+			result = mapper.getTotalUser(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	public ArrayList<ScheduleUser> listUser(PageNavigator navi, String keyField, String keyWord) {
 		UserMapper mapper = session.getMapper(UserMapper.class);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("keyField", keyField);
 		map.put("keyWord", keyWord);
-		System.out.println("dao mapper:"+mapper);
 		RowBounds rb = new RowBounds(navi.getStartBoardPage(), navi.getBoardPerPage());
 		ArrayList<ScheduleUser> result = null;
 		try {
@@ -105,7 +161,6 @@ public class UserDAO {
 	public int getTotalUser(String keyField, String keyWord) {
 		UserMapper mapper = session.getMapper(UserMapper.class);
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.println("dao mapper:"+mapper);
 		map.put("keyField", keyField);
 		map.put("keyWord", keyWord);
 		int result = 0;

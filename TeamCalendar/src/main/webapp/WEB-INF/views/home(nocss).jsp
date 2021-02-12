@@ -89,9 +89,7 @@ table {
 			<a class="nav-link" href="/">HOME</a> &nbsp;&nbsp;&nbsp;
 		</p>
 	</div>
-	<br>
-	<br>
-	<br>
+
 	<h4 class="font-thin"
 		style="text-align: center; color: white; font-size: 32px;">
 		ようこそ! <span style="font-size: 45px;">Team SCHEDULE</span>へ
@@ -132,6 +130,18 @@ table {
 			</table>
 		</fieldset>
 	</form>
+	
+<!-- 	<div class='container'> -->
+<!--   <h2>or <a href='#'>sign in</a></h2> -->
+<!--   <form action="loginUser" id="loginUser" method="post"> -->
+<!--   <div class='form'> -->
+<!--     <input name="email" id="email" placeholder="EMAIL" /> -->
+<!--     <input type="password" name="password" id="password" placeholder="PASSWORD" /> -->
+<!--     <div id="checkMsg" style="font-size: 20px;"></div> -->
+<!--     <input type='submit' value='sign up' /> -->
+<!--   </div> -->
+<!--   </form> -->
+<div>
 </body>
 
 </html>

@@ -12,7 +12,6 @@
 
 		$(function() {
 			$(".insertMember").on('click', saveId);
-			console.log("실행");
 		});
 
 		function saveId(){
@@ -50,7 +49,6 @@
 		function idDelete(){
 			
 			var email = $(this).attr("email-sno");
-			console.log("idDelete실행");
 			$.ajax({
 				method : 'get'
 				,url : 'updateId'

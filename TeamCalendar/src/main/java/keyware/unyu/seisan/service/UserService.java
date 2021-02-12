@@ -1,7 +1,8 @@
 package keyware.unyu.seisan.service;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,20 @@ public class UserService {
 		return dao.selectUser(email);
 	}
 
-//	public ScheduleUser loginUser(String email, String password) {
-//		return dao.loginUser(email, password);
-//	}
-	
+	public int insertTeam(ScheduleUser user) {
+		return dao.insertTeam(user);
+	}
+
 	public int insertUser(ScheduleUser user) {
 		return dao.insertUser(user);
+	}
+
+	public int teamSchedule() {
+		return dao.teamSchedule();
+	}
+
+	public int getTeamSchedule() {
+		return dao.getTeamSchedule();
 	}
 
 	public int updateUser(ScheduleUser user_select) {
@@ -34,15 +43,18 @@ public class UserService {
 	}
 
 	public ArrayList<ScheduleUser> listUser(PageNavigator navi, String keyField, String keyWord) {
-		System.out.println("service listUser navi:"+navi);
-		System.out.println("service listUser keyField:"+keyField);
-		System.out.println("service listUser keyWord:"+keyWord);
 		return dao.listUser(navi, keyField, keyWord);
 	}
 
 	public int getTotalUser(String keyField, String keyWord) {
-		System.out.println("service getTotalUser keyField:"+keyField);
-		System.out.println("service getTotalUser keyWord:"+keyWord);
 		return dao.getTotalUser(keyField, keyWord);
+	}
+
+	public ArrayList<ScheduleUser> teamUser(PageNavigator navi, String keyField, String keyWord, String teamNumber) {
+		return dao.teamUser(navi, keyField, keyWord, teamNumber);
+	}
+
+	public int getTeamUser(String keyField, String keyWord, String teamNumber) {
+		return dao.getTeamUser(keyField, keyWord, teamNumber);
 	}
 }

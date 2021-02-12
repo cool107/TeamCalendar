@@ -2,7 +2,6 @@ package keyware.unyu.seisan.controller;
 
 import java.util.ArrayList;
 
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,6 @@ public class UserController {
 		if (result != null) {
 			return result;
 		}
-		System.out.println("id check finish");
 		return null;
 	}
 
@@ -51,60 +49,40 @@ public class UserController {
 	// 会員登録
 	@RequestMapping(value = "joinUser", method = RequestMethod.POST)
 	public String joinMember(ScheduleUser user) {
-
 		int result = service.insertUser(user);
-
 		if (result != 1) {
 			System.out.println("failed");
 			return "redirect:/";
 		}
 		System.out.println("success");
-		System.out.println(user);
 		return "redirect:/";
 	}
 
-//	// ログインフォーム
-//	@RequestMapping(value = "loginUser", method = RequestMethod.GET)
-//	public String loginForm() {
-//		return "/user/loginForm";
-//	}
-
 	// ログイン
 	@RequestMapping(value = "loginUser", method = RequestMethod.POST)
-	public String loginUser(String email, HttpSession session) {
-			System.out.println(email);
-			ScheduleUser result = service.selectUser(email);
-			if (result!=null) {
-				session.setAttribute("loginId", result.getEmail());
-				session.setAttribute("loginName", result.getName());
-				session.setAttribute("loginDivision", result.getDivision());
-				return "/user/mainPage";
-			}else {
-				return "redirect:/";
-			}
-			
+	public String loginUser(String email, String password, HttpSession session) {
+		ScheduleUser result = service.selectUser(email);
+		if (result != null && result.getPassword().equals(password)) {
+			session.setAttribute("loginId", result.getEmail());
+			session.setAttribute("loginName", result.getName());
+			session.setAttribute("loginDivision", result.getDivision());
+			session.setAttribute("teamNumber", result.getTeamNumber());
+			return "/cal/main";
+		} else {
+			return "redirect:/";
+		}
 	}
-		
-//		if (email!=null&&password!=null) {
-////			ScheduleUser result = service.loginUser(email, password);
-//			if (result!=null) {
-//					System.out.println("loginSuccess");
-//					session.setAttribute("loginId", result.getEmail());
-//					session.setAttribute("loginName", result.getName());
-//					session.setAttribute("loginDivision", result.getDivision());
-//					return "/user/mainPage";
-//			}
-//		}
-//		String error = "IDまたはPASSWORDが違います。";
-//		session.setAttribute("error", error);
-//		return "redirect:/";
+
+	// メインページへ
+	@RequestMapping(value = "goMain", method = RequestMethod.GET)
+	public String goMain() {
+		return "/cal/main";
+	}
 
 	// ログアウト
 	@RequestMapping(value = "logoutUser", method = RequestMethod.GET)
 	public String logoutMember(HttpSession session) {
-
 		session.invalidate();
-
 		return "redirect:/";
 	}
 
@@ -114,21 +92,8 @@ public class UserController {
 
 		String email = (String) session.getAttribute("loginId");
 		ScheduleUser result = service.selectUser(email);
-		model.addAttribute("member", result);
-
-		return "/user/mypage";
-
-	}
-
-	// 会員情報修正フォームに移動
-	@RequestMapping(value = "updateUser", method = RequestMethod.GET)
-	public String updateUser_GET(HttpSession session, Model model) {
-
-		String email = (String) session.getAttribute("loginId");
-		ScheduleUser result = service.selectUser(email);
 		model.addAttribute("user", result);
-
-		return "/user/updateForm";
+		return "/user/mypage";
 	}
 
 	// 会員情報を修正
@@ -151,10 +116,47 @@ public class UserController {
 		model.addAttribute("user", user_select);
 
 		if (result == 1) {
-			return "redirect:/";
+			return "redirect:/goMain";
 		}
-
 		return "/user/mypage";
+	}
+
+	// チーム登録
+	@RequestMapping(value = "makeTeam", method = RequestMethod.GET)
+	public String makeTeam(Model model, HttpSession session) {
+		service.teamSchedule();
+		String teamNumber = Integer.toString(service.getTeamSchedule());
+		for (int i = 0; i < savedId.size(); i++) {
+			savedId.get(i).setTeamNumber(teamNumber);
+			int result = service.insertTeam(savedId.get(i));
+			if (result != 1) {
+				System.out.println("failed");
+				model.addAttribute("error", "チーム登録ができません。");
+				return "redirect:/";
+			}
+		}
+		savedId.clear();
+		return "redirect:/teamCheck";
+	}
+
+	// チームメンバー情報を読み込む
+	@RequestMapping(value = "teamCheck", method = RequestMethod.GET)
+	public String teamCheck(@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "keyField", defaultValue = "") String keyField,
+			@RequestParam(value = "keyWord", defaultValue = "") String keyWord, Model model, HttpSession session) {
+		String loginId = (String) session.getAttribute("loginId");
+		ScheduleUser result = service.selectUser(loginId);
+		String teamNumber =result.getTeamNumber();
+		if (teamNumber.equals("0")) {
+			return "/user/team";
+		}else {
+			int totalCount = service.getTeamUser(keyField, keyWord, teamNumber);
+			PageNavigator navi = new PageNavigator(boardPerPage, pagePerGroup, page, totalCount);
+			ArrayList<ScheduleUser> teamList = service.teamUser(navi, keyField, keyWord, teamNumber);
+			model.addAttribute("teamList", teamList);
+			model.addAttribute("navi", navi);
+		}
+		return "/user/team";
 	}
 
 	// 全会員情報を読み込む
@@ -163,34 +165,41 @@ public class UserController {
 			@RequestParam(value = "keyField", defaultValue = "") String keyField,
 			@RequestParam(value = "keyWord", defaultValue = "") String keyWord, Model model, HttpSession session) {
 		int totalCount = service.getTotalUser(keyField, keyWord);
-		savedId.clear();
 		PageNavigator navi = new PageNavigator(boardPerPage, pagePerGroup, page, totalCount);
 		ArrayList<ScheduleUser> userList = service.listUser(navi, keyField, keyWord);
 		model.addAttribute("userList", userList);
 		model.addAttribute("navi", navi);
-		return "/user/userList";
+		return "/user/invite";
 	}
 
 	// チームメンバーの追加
 	@ResponseBody
 	@RequestMapping(value = "saveId", method = RequestMethod.GET)
-	public ArrayList<ScheduleUser> saveId(String email) {
+	public ArrayList<ScheduleUser> saveId(String email, HttpSession session) {
 		ScheduleUser result = service.selectUser(email);
-		if (savedId.size() == 0) {
-			savedId.add(result);
-		} else {
-			for (int i = 0; i < savedId.size(); i++) {
-				if (savedId.get(i).getEmail().equals(email)) {
-					System.out.println("no add");
-					return savedId;
-				}
-			}
-			savedId.add(result);
+		if (savedId.size()==0) {
+			String addSelf =(String) session.getAttribute("loginId");
+			ScheduleUser self = service.selectUser(addSelf);
+			savedId.add(self);
 		}
+		for (int i = 0; i < savedId.size(); i++) {
+			if (savedId.get(i).getEmail().equals(email) || (!(savedId.get(i).getTeamNumber().equals("0")))) {
+				System.out.println("no add");
+				return savedId;
+			}
+		}
+		savedId.add(result);
 		return savedId;
 	}
 
-	// チームメンバーの削除
+	// 選択メンバーリストを画面に渡す
+	@ResponseBody
+	@RequestMapping(value = "listId", method = RequestMethod.GET)
+	public ArrayList<ScheduleUser> listId() {
+		return savedId;
+	}
+
+	// 選択メンバーの削除
 	@ResponseBody
 	@RequestMapping(value = "updateId", method = RequestMethod.GET)
 	public ArrayList<ScheduleUser> updateId(String email) {
@@ -202,4 +211,17 @@ public class UserController {
 		return savedId;
 	}
 
+	// チームメンバーの削除
+	@RequestMapping(value = "deleteUser", method = RequestMethod.GET)
+	public String deleteUser(String email) {
+		ScheduleUser user_select = service.selectUser(email);
+		user_select.setTeamNumber("0");
+		int result = service.updateUser(user_select);
+		if (result != 1) {
+			System.out.println("faildelete");
+			return "redirect:/teamCheck";
+		}
+		System.out.println("deleteFromTeam");
+		return "redirect:/teamCheck";
+	}
 }

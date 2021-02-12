@@ -4,53 +4,97 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="keyware.unyu.seisan.DAO.UserMapper">
 	<insert id="insertUser" parameterType="ScheduleUser">
-		INSERT INTO SCHEDULE_USER(EMAIL, PASSWORD, NAME, DIVISION) 
-		VALUES (#{email}, #{password}, #{name}, #{division})
+		INSERT INTO
+		SCHEDULE_USER(EMAIL, PASSWORD, NAME, DIVISION)
+		VALUES (#{email},
+		#{password}, #{name}, #{division})
 	</insert>
-	
-	<select id="selectUser" parameterType="String" resultType="ScheduleUser">
-		SELECT EMAIL, PASSWORD, NAME, DIVISION, INDATE
-		FROM SCHEDULE_USER
-		WHERE EMAIL =  #{email}
+
+	<select id="selectUser" parameterType="String"
+		resultType="ScheduleUser">
+		SELECT EMAIL, PASSWORD, NAME, DIVISION, INDATE, TeamNumber
+		FROM
+		SCHEDULE_USER
+		WHERE EMAIL = #{email}
 	</select>
-	
-<!-- 	<select id="loginUser" parameterType="String" resultType="ScheduleUser"> -->
-<!-- 		SELECT EMAIL, PASSWORD, NAME, DIVISION, INDATE -->
-<!-- 		FROM SCHEDULE_USER -->
-<!-- 		WHERE EMAIL =  #{email} -->
-<!-- 		AND PASSWORD = #{password} -->
-<!-- 	</select> -->
-		
+
+	<insert id="teamSchedule">
+		insert into SCHEDULE_TEAM(TEAM_SEQUENCE) values(NEXT
+		VALUE FOR tSEQ)
+	</insert>
+
+	<select id="getTeamSchedule" resultType="int">
+		SELECT last_used_value
+		FROM sys.sequences where name='tSEQ'
+	</select>
+
+	<update id="insertTeam" parameterType="ScheduleUser">
+		UPDATE SCHEDULE_USER
+		SET
+		TeamNumber=#{TeamNumber}
+		WHERE EMAIL=#{email}
+	</update>
+
 	<select id="listUser" parameterType="map" resultType="ScheduleUser">
-		SELECT 
-			EMAIL, NAME, DIVISION, INDATE
-		FROM 
-			SCHEDULE_USER
-			<choose>
-				<when test="keyField == 'email'"> WHERE EMAIL LIKE '%' || #{keyWord} || '%'</when>
-				<when test="keyField == 'name'">WHERE NAME LIKE '%' || #{keyWord} || '%'</when>
-				<when test="keyField == 'division'">WHERE DIVISION LIKE '%' || #{keyWord} || '%'</when>
-			</choose>
+		SELECT
+		EMAIL, NAME, DIVISION, INDATE, TeamNumber
+		FROM
+		SCHEDULE_USER
+		<choose>
+			<when test="keyField == 'email'"> where EMAIL LIKE '%${keyWord}%'</when>
+			<when test="keyField == 'name'">where NAME LIKE '%${keyWord}%'</when>
+			<when test="keyField == 'division'">where DIVISION LIKE '%${keyWord}%'</when>
+		</choose>
 		order by INDATE desc
 	</select>
-	
-	<select id="getTotalUser" parameterType="map" resultType="int">					
-		select				
-			count(*)			
-		from				
-			SCHEDULE_USER
-			<choose>
-				<when test="keyField == 'email'">WHERE EMAIL LIKE '%' || #{keyWord} || '%'</when>
-				<when test="keyField == 'name'">WHERE NAME LIKE '%' || #{keyWord} || '%'</when>
-				<when test="keyField == 'division'">WHERE DIVISION LIKE '%' || #{keyWord} || '%'</when>
-			</choose>
+
+	<select id="teamUser" parameterType="map" resultType="ScheduleUser">
+		SELECT
+		EMAIL, NAME, DIVISION, INDATE, TeamNumber
+		FROM
+		SCHEDULE_USER
+		where
+		TeamNumber = #{teamNumber}
+		<choose>
+			<when test="keyField == 'email'"> and EMAIL LIKE '%${keyWord}%'</when>
+			<when test="keyField == 'name'">and NAME LIKE '%${keyWord}%'</when>
+			<when test="keyField == 'division'">and DIVISION LIKE '%${keyWord}%'</when>
+		</choose>
+		order by INDATE desc
 	</select>
-	
+
+	<select id="getTeamUser" parameterType="map" resultType="int">
+		select
+		count(*)
+		from
+		SCHEDULE_USER
+		where TeamNumber = #{teamNumber}
+		<choose>
+		<when test="keyField == 'email'"> and EMAIL LIKE '%${keyWord}%'</when>
+			<when test="keyField == 'name'">and NAME LIKE '%${keyWord}%'</when>
+			<when test="keyField == 'division'">and DIVISION LIKE '%${keyWord}%'</when>
+		</choose>
+	</select>
+
+
+	<select id="getTotalUser" parameterType="map" resultType="int">
+		select
+		count(*)
+		from
+		SCHEDULE_USER
+		<choose>
+			<when test="keyField == 'email'"> where EMAIL LIKE '%${keyWord}%'</when>
+			<when test="keyField == 'name'">where NAME LIKE '%${keyWord}%'</when>
+			<when test="keyField == 'division'">where DIVISION LIKE '%${keyWord}%'</when>
+		</choose>
+	</select>
+
 	<update id="updateUser" parameterType="ScheduleUser">
 		UPDATE SCHEDULE_USER
-		SET 
-			PASSWORD =#{password},
-			DIVISION=#{division}
+		SET
+		PASSWORD =#{password},
+		DIVISION =#{division},
+		TeamNumber = #{TeamNumber}
 		WHERE EMAIL=#{email}
 	</update>
 </mapper>

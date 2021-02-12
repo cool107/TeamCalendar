@@ -1,15 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html>
 <head lang="en">
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/login.css">
-<!------ Include the above in your HEAD tag ---------->
-
 </head>
-
 <body>
 <h2>チームスケジュール</h2>
 <div class="container" id="container">
@@ -30,8 +26,8 @@
 			<div id="checkMsg" style="font-size: 20px;" ></div>
 			<input type="text" 	name="email" id="email" placeholder="Email">
 			<input type="password" name="password" id="password" placeholder="PASSWORD">
-			<input type="submit" type ="button" value ="ログイン">
-<!-- 			<button id="login">ログイン</button> -->
+<!-- 			<input type="submit" type ="button" value ="ログイン"> -->
+			<button id="login">ログイン</button>
 		</form>
 	</div>
 	<div class="overlay-container">
@@ -51,67 +47,12 @@
 </div>
 <script src="resources/js/jquery-3.3.1.js"></script>
 <script>
-const signUpButton = document.getElementById('signUp');
-const signInButton = document.getElementById('signIn');
-const container = document.getElementById('container');
-
-signUpButton.addEventListener('click', () => {
-	container.classList.add("right-panel-active");
-});
-
-signInButton.addEventListener('click', () => {
-	container.classList.remove("right-panel-active");
-});
 
 $(function() {
 	$("#login").on('click', login);
 	$("#join").on('click', joinMember);
 	$("#email").on('keyup', join);
 });
-
-function joinMember() {
-	var email2 =$("#email2").val();
-	var password2 = $('#password2').val();
-	var name2 = $('#name2').val();
-	var division2 =$('#division').val();
-	
-	if(email2 == ""){
-		alert("IDを入力してください。");
-		return;
-	} else if (password2 == "") {
-		alert("パスワードを入力してください。");
-		return;
-	} else  if (name2 == "") {
-		alert("お名前を入力してください。");
-		return;
-	} else  if (division2 == "") {
-		alert("所属を入力してください。");
-		return;
-	} else {
-		$("#joinUser").submit();
-	};
-}
-
-function join() {
-	var email2 = $("#email2").val();
-	
-	if (email.length < 3 || email.length > 30) {
-		$("#checkMsg2").html("IDの長さは3~30字です。").css('color', 'red');
-	} else {
-		$.ajax({
-			method : 'GET'
-			, url : 'checkId'
-			, data : {'email' : email2}
-			, success : function(resp){
-				if (resp != "") {
-					$("#checkMsg2").html("このIDは使用中です。</br>他のIDを選んでください。").css('color', 'red');
-				} else {
-					$("#checkMsg2").html("このIDは使えます。").css('color', 'green');
-				};
-			}
-		});
-	};
-};
 
 function login(){
 	var email = $('#email').val();
@@ -144,7 +85,64 @@ function login(){
 		}
 	});
 };
-  </script> 
+
+function joinMember() {
+	var email2 =$("#email2").val();
+	var password2 = $('#password2').val();
+	var name2 = $('#name2').val();
+	var division =$('#division').val();
+	
+	if(email2 == ''){
+		alert("IDを入力してください。");
+		return;
+	} else if (password2 == '') {
+		alert("パスワードを入力してください。");
+		return;
+	} else if (name2 == '') {
+		alert("お名前を入力してください。");
+		return;
+	} else if (division == '') {
+		alert("所属を入力してください。");
+		return;
+	} else {
+		$("#joinUser").submit();
+	};
+};
+
+function join() {
+	var email2 = $("#email2").val();
+	
+	if (email.length < 3 || email.length > 30) {
+		$("#checkMsg2").html("IDの長さは3~30字です。").css('color', 'red');
+	} else {
+		$.ajax({
+			method : 'GET'
+			, url : 'checkId'
+			, data : {'email' : email2}
+			, success : function(resp){
+				if (resp != "") {
+					$("#checkMsg2").html("このIDは使用中です。</br>他のIDを選んでください。").css('color', 'red');
+				} else {
+					$("#checkMsg2").html("このIDは使えます。").css('color', 'green');
+				};
+			}
+		});
+	};
+};
+
+const signUpButton = document.getElementById('signUp');
+const signInButton = document.getElementById('signIn');
+const container = document.getElementById('container');
+
+signUpButton.addEventListener('click', () => {
+	container.classList.add("right-panel-active");
+});
+
+signInButton.addEventListener('click', () => {
+	container.classList.remove("right-panel-active");
+});
+
+</script>
 
 </body>
 </html>
