@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
+import keyware.unyu.seisan.VO.SCHEDULE_CALENDAR;
 import keyware.unyu.seisan.VO.ScheduleUser;
 
 public interface UserMapper {
@@ -38,4 +39,8 @@ public interface UserMapper {
 
 	// チームメンバーの数を読み込む
 	public int getTeamUser(Map<String, String> map);
+
+	// チームメンバー情報を読み込む2
+	public ArrayList<ScheduleUser> memberList(String teamNumber);
+
 }

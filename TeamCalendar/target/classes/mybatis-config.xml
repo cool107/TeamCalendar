@@ -4,9 +4,11 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
+		<typeAlias alias="SCHEDULE_CALENDAR" type="keyware.unyu.seisan.VO.SCHEDULE_CALENDAR"/>
 		<typeAlias alias="ScheduleUser" type="keyware.unyu.seisan.VO.ScheduleUser"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mappers/userMapper.xml" />
+		<mapper resource="mappers/calendarMapper.xml" />
 	</mappers>
 </configuration>

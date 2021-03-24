@@ -6,7 +6,7 @@ public class ScheduleUser {
 	private String name;
 	private String division;
 	private String indate;
-	private String TeamNumber;
+	private String teamNumber;
 	
 	public ScheduleUser(String email, String password, String name, String division, String indate, String teamNumber) {
 		super();
@@ -15,7 +15,7 @@ public class ScheduleUser {
 		this.name = name;
 		this.division = division;
 		this.indate = indate;
-		TeamNumber = teamNumber;
+		this.teamNumber = teamNumber;
 	}
 
 
@@ -70,12 +70,12 @@ public class ScheduleUser {
 
 
 	public String getTeamNumber() {
-		return TeamNumber;
+		return teamNumber;
 	}
 
 
 	public void setTeamNumber(String teamNumber) {
-		TeamNumber = teamNumber;
+		this.teamNumber = teamNumber;
 	}
 
 

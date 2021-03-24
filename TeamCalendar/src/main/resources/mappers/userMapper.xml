@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectUser" parameterType="String"
 		resultType="ScheduleUser">
-		SELECT EMAIL, PASSWORD, NAME, DIVISION, INDATE, TeamNumber
+		SELECT EMAIL, PASSWORD, NAME, DIVISION, CONVERT(VARCHAR(10), INDATE, 111) as INDATE, TEAMNUMBER
 		FROM
 		SCHEDULE_USER
 		WHERE EMAIL = #{email}
@@ -31,13 +31,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="insertTeam" parameterType="ScheduleUser">
 		UPDATE SCHEDULE_USER
 		SET
-		TeamNumber=#{TeamNumber}
-		WHERE EMAIL=#{email}
+		TEAMNUMBER = #{teamNumber}
+		WHERE EMAIL = #{email}
 	</update>
 
 	<select id="listUser" parameterType="map" resultType="ScheduleUser">
 		SELECT
-		EMAIL, NAME, DIVISION, INDATE, TeamNumber
+		EMAIL, NAME, DIVISION, CONVERT(VARCHAR(10), INDATE, 111) as INDATE, TEAMNUMBER
 		FROM
 		SCHEDULE_USER
 		<choose>
@@ -50,11 +50,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="teamUser" parameterType="map" resultType="ScheduleUser">
 		SELECT
-		EMAIL, NAME, DIVISION, INDATE, TeamNumber
+		EMAIL, NAME, DIVISION, CONVERT(VARCHAR(10), INDATE, 111) as INDATE, TEAMNUMBER
 		FROM
 		SCHEDULE_USER
 		where
-		TeamNumber = #{teamNumber}
+		TEAMNUMBER = #{teamNumber}
 		<choose>
 			<when test="keyField == 'email'"> and EMAIL LIKE '%${keyWord}%'</when>
 			<when test="keyField == 'name'">and NAME LIKE '%${keyWord}%'</when>
@@ -68,14 +68,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		count(*)
 		from
 		SCHEDULE_USER
-		where TeamNumber = #{teamNumber}
+		where TEAMNUMBER = #{teamNumber}
 		<choose>
 		<when test="keyField == 'email'"> and EMAIL LIKE '%${keyWord}%'</when>
 			<when test="keyField == 'name'">and NAME LIKE '%${keyWord}%'</when>
 			<when test="keyField == 'division'">and DIVISION LIKE '%${keyWord}%'</when>
 		</choose>
 	</select>
-
 
 	<select id="getTotalUser" parameterType="map" resultType="int">
 		select
@@ -88,13 +87,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<when test="keyField == 'division'">where DIVISION LIKE '%${keyWord}%'</when>
 		</choose>
 	</select>
+	
+	<select id="memberList" parameterType="map" resultType="ScheduleUser">
+		SELECT
+		EMAIL, NAME, DIVISION, CONVERT(VARCHAR(10), INDATE, 111) as INDATE, TEAMNUMBER
+		FROM
+		SCHEDULE_USER
+		where
+		TEAMNUMBER = #{teamNumber}
+		order by INDATE desc
+	</select>
 
 	<update id="updateUser" parameterType="ScheduleUser">
 		UPDATE SCHEDULE_USER
 		SET
+		NAME = #{name},
 		PASSWORD =#{password},
 		DIVISION =#{division},
-		TeamNumber = #{TeamNumber}
+		TEAMNUMBER =#{teamNumber}
 		WHERE EMAIL=#{email}
 	</update>
 </mapper>

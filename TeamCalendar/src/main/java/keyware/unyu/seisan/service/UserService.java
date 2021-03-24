@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import keyware.unyu.seisan.DAO.UserDAO;
 import keyware.unyu.seisan.DAO.UserMapper;
+import keyware.unyu.seisan.VO.SCHEDULE_CALENDAR;
 import keyware.unyu.seisan.VO.ScheduleUser;
 import keyware.unyu.seisan.util.PageNavigator;
 
@@ -57,4 +58,10 @@ public class UserService {
 	public int getTeamUser(String keyField, String keyWord, String teamNumber) {
 		return dao.getTeamUser(keyField, keyWord, teamNumber);
 	}
+
+	public ArrayList<ScheduleUser> memberList(String teamNumber) {
+		// TODO Auto-generated method stub
+		return dao.memberList(teamNumber);
+	}
+
 }

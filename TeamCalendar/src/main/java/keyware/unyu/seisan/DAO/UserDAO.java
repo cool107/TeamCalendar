@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import keyware.unyu.seisan.VO.SCHEDULE_CALENDAR;
 import keyware.unyu.seisan.VO.ScheduleUser;
 import keyware.unyu.seisan.util.PageNavigator;
 
@@ -135,7 +136,7 @@ public class UserDAO {
 		map.put("teamNumber", teamNumber);
 		int result = 0;
 		try {
-			result = mapper.getTotalUser(map);
+			result = mapper.getTeamUser(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -166,6 +167,18 @@ public class UserDAO {
 		int result = 0;
 		try {
 			result = mapper.getTotalUser(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public ArrayList<ScheduleUser> memberList(String teamNumber) {
+		// TODO Auto-generated method stub
+		UserMapper mapper = session.getMapper(UserMapper.class);
+		ArrayList<ScheduleUser> result = null;
+		try {
+			result = mapper.memberList(teamNumber);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

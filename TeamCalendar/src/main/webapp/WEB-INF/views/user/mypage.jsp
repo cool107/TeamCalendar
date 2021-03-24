@@ -1,371 +1,395 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html>
-<script src="resources/js/jquery-3.3.1.js"></script>
-<script type="text/javascript"></script>
-<head lang="en">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/login.css">
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/cal.css">
-<meta charset="utf-8">
-
-<title>MyPage</title>
-
-
-</head>
-<style>
-    /**
- * ALL the UI design credit goes to:
- * https://www.sketchappsources.com/free-source/2676-calendar-template-sketch-freebie-resource.html
- */
-
-
-/* WRAPPER */
-
-.wrapper {
-  display: grid;
-  grid-template-rows: 70px 1fr 70px;
-  grid-template-columns: 1fr;
-  grid-template-areas: "sidebar"
-                       "content";
-  width: 100vw; /* unnecessary, but let's keep things consistent */
-  height: 100vh;
-}
-
-@media screen and (min-width: 850px) {
-  .wrapper {
-    grid-template-columns: 200px 5fr;
-    grid-template-rows: 1fr;
-    grid-template-areas: "sidebar content";
-  }
-}
-
-
-
-/* SIDEBAR */
-
-main {
-  grid-area: content;
-  padding: 48px;
-}
-
-sidebar {
-  grid-area: sidebar;
-  display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
-  grid-template-rows: 3fr 1fr;
-  grid-template-areas: "logo menu avatar"
-                       "copyright menu avatar";
-}
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.copyright {
-  text-align: center;
-}
-.avatar {
-  grid-area: avatar;
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-}
-.avatar__name {
-  flex: 1;
-  text-align: right;
-  margin-right: 1em;
-}
-.avatar__img > img {
-  display: block;
-}
-
-.copyright {
-  grid-area: copyright;
-}
-.menu {
-  grid-area: menu;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-.logo {
-  grid-area: logo;
-}
-.menu__text {
-  display: none;
-}
-
-@media screen and (min-width: 850px) {
-  sidebar {
-    grid-template-areas: "logo"
-                         "avatar"
-                         "menu"
-                         "copyright";
-    grid-template-columns: 1fr;
-    grid-template-rows: 50px auto 1fr 50px;
-  }
-  
-  .menu {
-    flex-direction: column;
-    align-items: normal;
-    justify-content: flex-start;
-  }
-  .menu__text {
-    display: inline-block;
-  }
-  .avatar {
-    flex-direction: column;
-  }
-  .avatar__name {
-    margin: 1em 0;
-  }
-  .avatar__img > img {
-    border-radius: 50%;
-  }
-}
-
-
-
-
-/* MAIN */
-
-.toolbar{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-.calendar{}
-
-.calendar__week,
-.calendar__header {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);  
-}
-.calendar__week {
-  grid-auto-rows: 100px;
-  text-align: right;
-}
-
-.calendar__header {
-  grid-auto-rows: 50px;
-  align-items: center;
-  text-align: center;
-}
-
-.calendar__day {
-  padding: 16px;
-}
-
-
-
-
-/* COSMETIC STYLING */
-
-:root {
-  --red: #ED5454;
-}
-
-body {
-  font-family: Montserrat;
-  font-weight: 100;
-  color: #A8B2B9;
-}
-
-sidebar {
-  background-color: white;
-  box-shadow: 5px 0px 20px rgba(0, 0, 0, 0.2);
-}
-
-main {
-  background-color: #FCFBFC;
-}
-
-.avatar__name {
-  font-size: 0.8rem;
-}
-
-.menu__item {
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  font-weight: 500;
-  padding: 16px 16px 16px 14px;
-  border-left: 4px solid transparent;
-  color: inherit;
-  text-decoration: none;
-  transition: color ease 0.3s;
-}
-
-.menu__item--active .menu__icon {
-  color: var(--red);
-}
-.menu__item--active .menu__text {
-  color: black;
-}
-
-.menu__item:hover {
-  color: black;
-}
-
-
-.menu__icon {
-  font-size: 1.3rem;
-}
-
-@media screen and (min-width: 850px) {
-  .menu__icon {
-    font-size: 0.9rem;
-    padding-right: 16px;
-  }
-  .menu__item--active {
-    border-left: 4px solid var(--red);
-    box-shadow: inset 10px 0px 17px -13px var(--red);
-  }
-}
-
-.copyright {
-  font-size: 0.7rem;
-  font-weight: 400;
-}
-
-.calendar {
-  background-color: white;
-  border: 1px solid #e1e1e1;
-}
-
-.calendar__header > div {
-  text-transform: uppercase;
-  font-size: 0.8em;
-  font-weight: bold;
-}
-
-.calendar__day {
-  border-right: 1px solid #e1e1e1;
-  border-top: 1px solid #e1e1e1;
-}
-
-.calendar__day:last-child {
-  border-right: 0;
-}
-
-.toggle{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  text-align: center;
-  font-size: 0.9em;
-}
-.toggle__option{
-  padding: 16px;
-  border: 1px solid #e1e1e1;
-  border-radius: 8px;
-  text-transform: capitalize;
-  cursor: pointer;
-}
-.toggle__option:first-child {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-.toggle__option:last-child {
-    border-left: 0;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-.toggle__option--selected{
-  border-color: white;
-  background-color: white;
-  color: var(--red);
-  font-weight: 500;
-  box-shadow: 1px 2px 30px -5px var(--red);
-}
-  </style>
-</style>
+<!doctype html>
+<html lang="jp">
 <script src="resources/js/jquery-3.3.1.js"></script>
 <script>
+$(function(){
+	$("#update").on('click', updateUser);
+    var responseMessage = "<c:out value="${msg}" />";
+    if (responseMessage != ""){
+        alert(responseMessage)
+    }
+});
 
+function updateUser() {
+	var email =$('#email').val();
+	var password = $('#password').val();
+	var name = $('#name').val();
+	var division =$('#division').val();
+	var password2 = $('#password2').val();
+	
+	if (password == "") {
+		alert("パスワードを入力してください。");
+		return false;
+	} else if (name == "") {
+		alert("お名前を入力してください。");
+		return false;
+	} else if (division == "") {
+		alert("所属を入力してください。");
+		return false;
+	}else if (password != password2) {
+		alert("パスワードが違います。");
+		return false;
+	}
+};
 		
 </script>
+<head>
 
-<body>
-	
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>プロフィール</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="${pageContext.request.contextPath}/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="${pageContext.request.contextPath}/resources/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
 
 
-<div class="wrapper">
- 	
-  <main>
-  <div class="navbar navbar-fixed-top">
-		<p style="text-align: right; font-size: 20px;">
-		</p>
-	</div>
-	<h4 class="font-thin"
-		style="text-align: center; color: balck; font-size: 32px;">
-		<span style="font-size: 45px;">登録情報</span>
-	</h4>
-	<br>
-<div class="container right-panel-active" id="container">
-	<div class="form-container sign-up-container">
-		<form action="updateUser" id="updateUser" method="post">
-			<h1>会員登録</h1>
-			<div id="checkMsg" style="font-size: 20px;"></div>
-			ID<input type="text" id="email" name="email"　 value="${user.email}" readonly="readonly" placeholder="Email">
-			名前<input type="text" name="name" id="name" value="${user.name}"placeholder="名前">
-			PASSWORD<input type="password" name="password" id="password" value="${user.password}" placeholder="PASSWORD">
-			所属<input type="text" name="division" id="division" value="${user.division}" placeholder="所属">
-			加入日<input type="text" id="indate" name="indate"　 value="${user.indate}" readonly="readonly" placeholder="加入日">
-			<button id="join" type="submit">情報修正</button>
-		</form>
-	</div>
-	<div class="overlay-container">
-		<div class="overlay">
-			<div class="overlay-panel overlay-left">
-				<p>修正情報を入力してください。
-				
-			</div>
-		</div>
-	</div>
-</div>
-					
-  </main>
-  <sidebar>
-    <div class="logo"><a href="goMain">TeamSchedule</a></div>
-    <div class="avatar">
-      <div class="avatar__name">${sessionScope.loginName }様 </div>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="goMain">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Team Calendar</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="goMain">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Menus
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>チーム</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">チームメニュー</h6>
+                        <a class="collapse-item" href="userList">>チームメンバー招待</a>
+                        <a class="collapse-item" href="teamCheck">>チームメンバー確認</a>
+                        
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="userList">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>チームメンバー招待</span></a>
+            </li>
+
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="goCalendar">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>カレンダー</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+<!--                     <form -->
+<!--                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"> -->
+<!--                         <div class="input-group"> -->
+<!--                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." -->
+<!--                                 aria-label="Search" aria-describedby="basic-addon2"> -->
+<!--                             <div class="input-group-append"> -->
+<!--                                 <button class="btn btn-primary" type="button"> -->
+<!--                                     <i class="fas fa-search fa-sm"></i> -->
+<!--                                 </button> -->
+<!--                             </div> -->
+<!--                         </div> -->
+<!--                     </form> -->
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
+<!--                         <li class="nav-item dropdown no-arrow mx-1"> -->
+<!--                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" -->
+<!--                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+<!--                                 <i class="fas fa-bell fa-fw"></i> -->
+<!--                                 Counter - Alerts -->
+<!--                                 <span class="badge badge-danger badge-counter">3+</span> -->
+<!--                             </a> -->
+<!--                             Dropdown - Alerts -->
+<!--                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" -->
+<!--                                 aria-labelledby="alertsDropdown"> -->
+<!--                                 <h6 class="dropdown-header"> -->
+<!--                                     Alerts Center -->
+<!--                                 </h6> -->
+<!--                                 <a class="dropdown-item d-flex align-items-center" href="#"> -->
+<!--                                     <div class="mr-3"> -->
+<!--                                         <div class="icon-circle bg-primary"> -->
+<!--                                             <i class="fas fa-file-alt text-white"></i> -->
+<!--                                         </div> -->
+<!--                                     </div> -->
+<!--                                     <div> -->
+<!--                                         <div class="small text-gray-500">December 12, 2019</div> -->
+<!--                                         <span class="font-weight-bold">A new monthly report is ready to download!</span> -->
+<!--                                     </div> -->
+<!--                                 </a> -->
+<!--                                 <a class="dropdown-item d-flex align-items-center" href="#"> -->
+<!--                                     <div class="mr-3"> -->
+<!--                                         <div class="icon-circle bg-success"> -->
+<!--                                             <i class="fas fa-donate text-white"></i> -->
+<!--                                         </div> -->
+<!--                                     </div> -->
+<!--                                     <div> -->
+<!--                                         <div class="small text-gray-500">December 7, 2019</div> -->
+<!--                                         $290.29 has been deposited into your account! -->
+<!--                                     </div> -->
+<!--                                 </a> -->
+<!--                                 <a class="dropdown-item d-flex align-items-center" href="#"> -->
+<!--                                     <div class="mr-3"> -->
+<!--                                         <div class="icon-circle bg-warning"> -->
+<!--                                             <i class="fas fa-exclamation-triangle text-white"></i> -->
+<!--                                         </div> -->
+<!--                                     </div> -->
+<!--                                     <div> -->
+<!--                                         <div class="small text-gray-500">December 2, 2019</div> -->
+<!--                                         Spending Alert: We've noticed unusually high spending for your account. -->
+<!--                                     </div> -->
+<!--                                 </a> -->
+<!--                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> -->
+<!--                             </div> -->
+<!--                         </li> -->
+
+
+<!--                         <div class="topbar-divider d-none d-sm-block"></div> -->
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.loginName }様</span>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="mypage">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    プロフィール
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="logoutUser" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    ログアウト
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+					<div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block"><img src="${pageContext.request.contextPath}/resources/image/key.png" alt=""></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">情報確認</h1>
+                            </div>
+                            <form class="user" action="updateUser" id="updateUser" method="post">
+                                <div class="form-group">
+                                    　名前<input type="text" class="form-control form-control-user" value="${user.name}" name="name" id="name" readonly="readonly"
+                                        placeholder="名前">
+                                </div>
+                                <div class="form-group">
+                                    　部署<input type="text" class="form-control form-control-user" value="${user.division}" name="division" id="division"
+                                        placeholder="部署">
+                                </div>
+                                <div class="form-group">
+                                    　ID<input type="text" class="form-control form-control-user" value="${user.email}" readonly="readonly" id="email" name="email"
+                                        placeholder="Email Address">
+                                </div>
+                                <div class="form-group">
+                                    　チーム<input type="text" class="form-control form-control-user" value="${user.teamNumber}" readonly="readonly" id="teamNumber" name="teamNumber"
+                                        placeholder="Email Address">
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                      パスワード<input type="password" class="form-control form-control-user"
+                                            value="${user.password}" name="password" id="password" placeholder="Password">
+                                    </div>
+                                    <div class="col-sm-6">
+                                      再入力<input type="password" class="form-control form-control-user"
+                                            value="${user.password}" name="password2" id="password2" placeholder="Repeat Password">
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-user btn-block" id="update" >
+                                    情報修正
+                                </button>
+                                
+                                <div class="text-center">
+                                    <div id="checkMsg" style="font-size: 17px;"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <nav class="menu">
-      <a class="menu__item" href="mypage">
-        <i class="menu__icon fa fa-home"></i>
-        <span class="menu__text">MｙInfo</span>
-      </a>
-      <a class="menu__item" href="userList">
-        <i class="menu__icon fa fa-envelope"></i>
-        <span class="menu__text">招待</span>
-      </a>
-      <a class="menu__item" href="teamCheck">
-        <i class="menu__icon fa fa-list"></i>
-        <span class="menu__text">チーム</span>
-      </a>
-      <a class="menu__item menu__item--active" href="#">
-        <i class="menu__icon fa fa-calendar"></i>
-        <span class="menu__text">カレンダー</span>
-      </a>
-      <a class="menu__item" href="#">
-        <i class="menu__icon fa fa-bar-chart"></i>
-        <span class="menu__text">チーム掲示板</span>
-      </a>
-      <a class="menu__item" href="#">
-        <i class="menu__icon fa fa-trophy"></i>
-        <span class="menu__text">achivements</span>
-      </a>
-      <a class="menu__item" href="logoutUser">
-        <i class="menu__icon fa fa-sliders"></i>
-        <span class="menu__text">ログアウト</span>
-      </a>
-    </nav>
-  </sidebar>
-</div>
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ログアウト</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">本当にログアウトしますか。</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">キャンセル</button>
+                    <a class="btn btn-primary" href="logoutUser">ログアウト</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="${pageContext.request.contextPath}/resources/vendor/jquery/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="${pageContext.request.contextPath}/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="${pageContext.request.contextPath}/resources/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="${pageContext.request.contextPath}/resources/vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="${pageContext.request.contextPath}/resources/js/demo/chart-area-demo.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/demo/chart-pie-demo.js"></script>
 
 </body>
+
 </html>
