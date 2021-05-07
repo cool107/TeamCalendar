@@ -111,17 +111,17 @@ function updateUser() {
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="userList">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>チームメンバー招待</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="goCalendar">
+                <a class="nav-link" href="goCalendar2" target="_blank">
                     <i class="fas fa-fw fa-table"></i>
                     <span>カレンダー</span></a>
             </li>
+
+            <!-- Nav Item - Tables -->
+<!--             <li class="nav-item"> -->
+<!--                 <a class="nav-link" href="goCalendar"> -->
+<!--                     <i class="fas fa-fw fa-table"></i> -->
+<!--                     <span>カレンダー</span></a> -->
+<!--             </li> -->
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -294,20 +294,26 @@ function updateUser() {
                                         placeholder="部署">
                                 </div>
                                 <div class="form-group">
-                                    　ID<input type="text" class="form-control form-control-user" value="${user.email}" readonly="readonly" id="email" name="email"
+                                    　ID(EMAIL)<input type="text" class="form-control form-control-user" value="${user.email}" readonly="readonly" id="email" name="email"
                                         placeholder="Email Address">
                                 </div>
                                 <div class="form-group">
-                                    　チーム<input type="text" class="form-control form-control-user" value="${user.teamNumber}" readonly="readonly" id="teamNumber" name="teamNumber"
+                                <c:if test="${user.teamNumber != 0}">
+                               　 チーム<input type="text" class="form-control form-control-user" value="あり" readonly="readonly" id="teamNumber" name="teamNumber"
                                         placeholder="Email Address">
+                                </c:if>
+                                <c:if test="${user.teamNumber == 0}">
+                               　 チーム<input type="text" class="form-control form-control-user" value="無し" readonly="readonly" id="teamNumber" name="teamNumber"
+                                        placeholder="Email Address">
+                                </c:if>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                      パスワード<input type="password" class="form-control form-control-user"
+                                     　 パスワード<input type="password" class="form-control form-control-user"
                                             value="${user.password}" name="password" id="password" placeholder="Password">
                                     </div>
                                     <div class="col-sm-6">
-                                      再入力<input type="password" class="form-control form-control-user"
+                                     　 再入力<input type="password" class="form-control form-control-user"
                                             value="${user.password}" name="password2" id="password2" placeholder="Repeat Password">
                                     </div>
                                 </div>
