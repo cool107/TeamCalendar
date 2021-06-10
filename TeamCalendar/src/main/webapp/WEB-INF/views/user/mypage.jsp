@@ -109,12 +109,16 @@ function updateUser() {
                 </div>
             </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="goCalendar2" target="_blank">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>カレンダー</span></a>
-            </li>
+            <c:if test="${sessionScope.teamNumber== 0}">
+            </c:if>
+            <c:if test="${sessionScope.teamNumber!= 0}">
+	            <!-- Nav Item - Charts -->
+	            <li class="nav-item">
+	                <a class="nav-link" href="goCalendar2" target="_blank">
+	                    <i class="fas fa-fw fa-table"></i>
+	                    <span>カレンダー</span></a>
+	            </li>
+            </c:if>
 
             <!-- Nav Item - Tables -->
 <!--             <li class="nav-item"> -->
@@ -342,7 +346,7 @@ function updateUser() {
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Copyright &copy; (C）Keyware Solutions Inc.</span>
                     </div>
                 </div>
             </footer>

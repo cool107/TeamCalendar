@@ -250,6 +250,7 @@ public class UserController {
 		String loginId = (String) session.getAttribute("loginId");
 		ScheduleUser result = service.selectUser(loginId);
 		String teamNumber = result.getTeamNumber();
+		session.setAttribute("teamNumber", result.getTeamNumber());
 		if (teamNumber.equals("0")) {
 			return "/user/team";
 		} else {
