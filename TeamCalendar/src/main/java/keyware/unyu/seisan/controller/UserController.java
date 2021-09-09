@@ -1,5 +1,7 @@
 package keyware.unyu.seisan.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
@@ -227,7 +229,10 @@ public class UserController {
 			}
 		} else {
 			service.teamSchedule();
-			String teamNumber = Integer.toString(service.getTeamSchedule());
+			System.out.println("start to get");
+			System.out.println("start to get2");
+			String teamNumber = Long.toString(service.getTeamSchedule());
+			System.out.println("end to get");
 			for (int i = 0; i < savedId.size(); i++) {
 				savedId.get(i).setTeamNumber(teamNumber);
 				int result = service.insertTeam(savedId.get(i));

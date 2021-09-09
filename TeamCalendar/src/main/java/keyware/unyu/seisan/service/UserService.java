@@ -35,7 +35,7 @@ public class UserService {
 		return dao.teamSchedule();
 	}
 
-	public int getTeamSchedule() {
+	public long getTeamSchedule() {
 		return dao.getTeamSchedule();
 	}
 

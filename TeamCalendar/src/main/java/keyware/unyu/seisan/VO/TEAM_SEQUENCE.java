@@ -1,7 +1,7 @@
 package keyware.unyu.seisan.VO;
 
 public class TEAM_SEQUENCE {
-	private int team_sequence;
+	private long team_sequence;
 
 	public TEAM_SEQUENCE() {
 		super();
@@ -13,11 +13,11 @@ public class TEAM_SEQUENCE {
 		this.team_sequence = team_sequence;
 	}
 
-	public int getTeam_sequence() {
+	public long getTeam_sequence() {
 		return team_sequence;
 	}
 
-	public void setTeam_sequence(int team_sequence) {
+	public void setTeam_sequence(long team_sequence) {
 		this.team_sequence = team_sequence;
 	}
 

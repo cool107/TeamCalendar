@@ -23,9 +23,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUE FOR tSEQ)
 	</insert>
 
-	<select id="getTeamSchedule" resultType="int">
-		SELECT last_used_value
-		FROM sys.sequences where name='tSEQ'
+	<select id="getTeamSchedule" resultType="Long">
+		SELECT last_used_value FROM UNYU_COMMON_GROUP.sys.sequences where name='tSEQ'
 	</select>
 
 	<update id="insertTeam" parameterType="ScheduleUser">

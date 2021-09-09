@@ -79,8 +79,8 @@ public class UserDAO {
 	}
 	
 	//TeamScheduleに登録した番号読み込む
-	public int getTeamSchedule() {
-		int result = 0;
+	public long getTeamSchedule() {
+		long result = 0;
 		UserMapper mapper = session.getMapper(UserMapper.class);
 		try {
 			result = mapper.getTeamSchedule();

@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="global.dclass.team5">
+	<logger name="keyware.unyu.seisan">
 		<level value="info" />
 	</logger>
 	

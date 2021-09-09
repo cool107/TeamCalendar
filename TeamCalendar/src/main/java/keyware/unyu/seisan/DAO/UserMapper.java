@@ -26,7 +26,7 @@ public interface UserMapper {
 	public int teamSchedule();
 
 	// TeamScheduleに登録した番号読み込む
-	public int getTeamSchedule();
+	public long getTeamSchedule();
 
 	// 全会員情報を読み込む
 	public ArrayList<ScheduleUser> listUser(RowBounds rb, Map<String, String> map);
